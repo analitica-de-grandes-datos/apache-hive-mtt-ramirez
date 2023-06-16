@@ -10,7 +10,6 @@ Apache Hive se ejecutará en modo local (sin HDFS).
 Escriba el resultado a la carpeta `output` de directorio de trabajo.
 */
 
-
 DROP TABLE IF EXISTS tbl0;
 CREATE TABLE tbl0 (
     c1 INT,
@@ -44,3 +43,10 @@ LOAD DATA LOCAL INPATH 'data1.csv' INTO TABLE tbl1;
 /*
     >>> Escriba su respuesta a partir de este punto <<<
 */
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\n'
+SELECT DISTINCT exploded_c5
+FROM tbl0
+LATERAL VIEW explode(c5) exploded AS exploded_c5
+ORDER BY exploded_c5;
